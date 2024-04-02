@@ -1,8 +1,12 @@
+import Topbar from "../components/Topbar";
 
 const HomePage = () => {
   return (
-    <div>HomePage</div>
-  )
-}
+    <>
+      <Topbar />
+      <div className="h-screen bg-gradient-to-r from-[#184352] to-[#184352]"></div>
+    </>
+  );
+};
 
-export default HomePage
+export default HomePage;

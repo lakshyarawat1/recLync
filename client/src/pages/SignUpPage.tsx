@@ -1,6 +1,17 @@
+import { useState } from "react";
 import Topbar from "../components/Topbar";
+import { signUp } from "../api/authAPI";
 
 const SignUpPage = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = () => {
+    const res = signUp(username, password);
+
+    console.log(res);
+  };
+
   return (
     <>
       <Topbar />
@@ -14,12 +25,13 @@ const SignUpPage = () => {
             Sign Up
           </h1>
           <div className=" bg-[#171d25] p-10 rounded-xl shadow-2xl">
-            <form>
+            <div>
               <div className="flex flex-col gap-2">
                 <label className="text-blue-600 text-sm font-bold tracking-wider uppercase">
                   Enter Username
                 </label>
                 <input
+                  onChange={(e) => setUsername(e.target.value)}
                   type="text"
                   className="bg-slate-700 h-10 w-80 text-white opacity-80 font-semibold text-xl tracking-widest"
                 />
@@ -29,6 +41,7 @@ const SignUpPage = () => {
                   Password
                 </label>
                 <input
+                  onChange={(e) => setPassword(e.target.value)}
                   type="password"
                   className="bg-slate-700 h-10 w-80 text-white opacity-80 font-semibold text-xl tracking-widest"
                 />
@@ -41,12 +54,12 @@ const SignUpPage = () => {
                 <input type="checkbox" value="remember" />
               </div> */}
               <button
-                type="submit"
+                onClick={handleSubmit}
                 className="w-full bg-gradient-to-r from-[#3fe2ff] mt-4 text-white text-xl tracking-widest to-blue-700 h-12"
               >
                 Sign Up
               </button>
-            </form>
+            </div>
             <div>
               <p className="text-white text-xs mt-3">
                 Already have an account ?{" "}
