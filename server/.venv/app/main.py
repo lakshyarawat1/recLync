@@ -1,22 +1,18 @@
-from flask import Flask, jsonify
+from flask import g,Flask, jsonify, current_app
 from flask_cors import CORS
-from pymongo import MongoClient
-import os
+import db
 
 app = Flask(__name__)
 
-client = MongoClient('mongodb+srv://lakshyarawat1:lakshyarawat1@reclync.lxdzy0g.mongodb.net/?retryWrites=true&w=majority&appName=recLync' , serverSelectionTimeoutMS=5000)
 
-db = client['recLync']
-
-print(client.list_database_names() , 'connected')
 
 CORS(app, origins='http://localhost:5173')
 
+db.init_app(app)
 
 @app.route('/')
 def index():
-   return ''
+   return 'testing'
 
 @app.route('/api/auth/signUp')
 def signUp():

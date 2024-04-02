@@ -4,6 +4,7 @@ export type Games = {
     description: string,
     rating: number,
     released: Date,
+    price : number,
     background_image: string,
     tags: string,
     platforms: string[],
