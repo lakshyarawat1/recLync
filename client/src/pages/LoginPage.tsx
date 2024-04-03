@@ -3,12 +3,12 @@ import Topbar from "../components/Topbar";
 const LoginPage = () => {
   return (
     <>
-      <Topbar />
       <div className="bg-[#171d25] h-screen ">
         <img
           src="/login-background.jpeg"
           className="w-full h-full absolute object-cover opacity-50 "
-        />
+        />{" "}
+        <Topbar />
         <div className="absolute  top-[35%] left-[35%]">
           <h1 className="text-white opacity-90 text-3xl font-extrabold tracking-widest my-2">
             Sign In
@@ -42,7 +42,7 @@ const LoginPage = () => {
               </div>
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r from-[#3fe2ff] mt-4 text-white text-xl tracking-widest to-blue-700 h-12"
+                className="w-full bg-blue-600 mt-4 text-white text-xl tracking-widest h-12"
               >
                 Sign In
               </button>
