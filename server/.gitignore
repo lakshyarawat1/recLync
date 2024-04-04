@@ -10,6 +10,8 @@ app/Scripts
 
 app/db.sqlite
 
+app/games.csv
+
 # Distribution / packaging
 .Python
 build/

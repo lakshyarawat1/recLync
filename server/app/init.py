@@ -20,6 +20,7 @@ jwt = JWTManager(app)
 # Constants
  
 DATABASE="db.sqlite"
+SALT="secret-salt-will-be-secret-when-in-production"
 
 # Function / Actions
 def get_db():
@@ -66,18 +67,14 @@ def fetch_column_data(list, index):
     return data
 
 def hash_password(password):
-    salt = secrets.token_bytes(16)
 
-    salted_password = password.encode() + salt
+    hashed_password = hashlib.sha256((password + SALT).encode('utf-8')).hexdigest()
 
-    hashed_password = hashlib.sha256(salted_password).hexdigest()
+    return hashed_password
 
-    return salt, hashed_password
+def verify_password (password, hashed_password):
 
-def verify_password(hashed_password, salt, password):
-    salted_password = password.encode() + salt
-
-    new_hashed_password = hashlib.sha256(salted_password).hexdigest()
+    new_hashed_password = hashlib.sha256((password+SALT).encode('utf-8')).hexdigest()
 
     return new_hashed_password == hashed_password
 
@@ -116,27 +113,40 @@ def register_user():
     password = request_data['password']
     preferences = ''
 
+    hashed_password = hash_password(password)
+
     db = get_db()
     cursor = db.cursor()
-    cursor.execute('INSERT INTO users ( firstName, lastName, email, password, preferences) VALUES (?,?,?,?,?)', ( firstName, lastName, email, password, preferences))
+    cursor.execute('INSERT INTO users ( firstName, lastName, email, password, preferences) VALUES (?,?,?,?,?)', ( firstName, lastName, email, hashed_password, preferences))
     db.commit()
     return jsonify({ "data" : request_data, "success" : True, "message" : "User registered successfully"})
 
-@app.route('/api/auth.login', methods=['POST'])
-def login():
+@app.route('/api/auth/login', methods=['POST'])
+def login_user():
     request_data = request.get_json()
 
     email = request_data['email']
     password = request_data['password']
 
+    # print(email, password)
+
+
     db = get_db()
     cursor = db.cursor()
-    cursor.execute('SELECT * FROM users WHERE email = ?', (email))
+    cursor.execute('SELECT * FROM users WHERE email = ?', (email,))
     user = cursor.fetchone()
-
     print(user)
 
-    return ""
+    user_password = user[4]
+    auth = verify_password(password, user_password);
+
+    if auth:
+        access_token = create_access_token(identity = {'id': user[0], 'email': user[3]})
+        return jsonify({ "data" : { "access_token" : access_token }, "success" : True, "message" : "User logged in successfully"})
+    else:
+        return jsonify({ "data" : {}, "success" : False, "message" : "Invalid email or password"})
+
+
 # Main Function
 
 if __name__ == '__main__':  
