@@ -8,17 +8,14 @@ const SignUpPage = () => {
   const [password, setPassword] = useState("");
 
   const handleSubmit = async () => {
-    await signIn(email, password).then((res) => {
-      if (res.status === 200) {
+    await signIn(email, password).then((data) => {
+      if (data.success == true) {
         Swal.fire({
           icon: "success",
           title: "Signed In Successfully",
           showConfirmButton: false,
           timer: 1500,
         });
-        // setTimeout(() => {
-        //   window.location.href = "/";
-        // }, 1500);
       } else {
         Swal.fire({
           icon: "error",
@@ -26,7 +23,10 @@ const SignUpPage = () => {
           text: "Something went wrong!",
         });
       }
-      console.log(res);
+      sessionStorage.setItem("token", data.token);
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 1500);
     });
   };
 

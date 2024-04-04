@@ -142,7 +142,7 @@ def login_user():
 
     if auth:
         access_token = create_access_token(identity = {'id': user[0], 'email': user[3]})
-        return jsonify({ "data" : { "access_token" : access_token }, "success" : True, "message" : "User logged in successfully"})
+        return jsonify({ "token" : access_token, "success" : True, "message" : "User logged in successfully"})
     else:
         return jsonify({ "data" : {}, "success" : False, "message" : "Invalid email or password"})
 

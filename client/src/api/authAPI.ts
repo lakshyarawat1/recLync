@@ -10,5 +10,5 @@ export const signUp = async (email : string, password: string, firstName : strin
 export const signIn = async (email : string, password:  string) => {
     const response = await axios.post('/auth/login', { email, password })
     
-    return response;
+    return response.data;
 }
