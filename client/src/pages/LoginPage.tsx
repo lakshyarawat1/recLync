@@ -1,6 +1,34 @@
+import { useState } from "react";
 import Topbar from "../components/Topbar";
+import { signIn } from "../api/authAPI";
+import Swal from "sweetalert2";
 
 const LoginPage = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = async () => {
+    await signIn(email, password).then((res) => {
+      if (res.status === 200) {
+        Swal.fire({
+          icon: "success",
+          title: "Signed In Successfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 1500);
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+        });
+      }
+    });
+  };
+
   return (
     <>
       <div className="bg-[#171d25] h-screen ">
@@ -20,6 +48,7 @@ const LoginPage = () => {
                   Sign In With Account
                 </label>
                 <input
+                  onChange={(e) => setEmail(e.target.value)}
                   type="text"
                   className="bg-slate-700 h-10 w-80 text-white opacity-80 font-semibold text-xl tracking-widest"
                 />
@@ -29,6 +58,7 @@ const LoginPage = () => {
                   Password
                 </label>
                 <input
+                  onChange={(e) => setPassword(e.target.value)}
                   type="password"
                   className="bg-slate-700 h-10 w-80 text-white opacity-80 font-semibold text-xl tracking-widest"
                 />
@@ -42,6 +72,7 @@ const LoginPage = () => {
               </div>
               <button
                 type="submit"
+                onClick={handleSubmit}
                 className="w-full bg-blue-600 mt-4 text-white text-xl tracking-widest h-12"
               >
                 Sign In
