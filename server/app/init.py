@@ -7,6 +7,7 @@ import json
 import sqlite3
 import hashlib
 import secrets
+import random
 
 
 # App Initialization
@@ -50,14 +51,10 @@ def teardown_db(exception):
 def get_data_from_csv():
     with open('games.csv', 'r', encoding='utf-8') as f:
         reader = csv.reader(f)
-
-        data=[]
-        
-        for i, row in enumerate(reader):
-            if i >=10 :
-                break
-            data.append(row)
-    return data
+        next(reader)
+        all_rows = list(reader)
+        random_rows = random.sample(all_rows, 20)
+    return random_rows
 
 def fetch_column_data(list, index):
     data=[]
@@ -95,7 +92,6 @@ def query():
     return str(results)
 
 @app.route('/api/games')
-@cache.cached(timeout=50)
 @jwt_required()
 def stream_data():
     data = get_data_from_csv()
