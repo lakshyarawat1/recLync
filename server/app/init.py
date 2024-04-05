@@ -1,6 +1,6 @@
 from flask import Flask,g, jsonify, request, Response
 from flask_cors import CORS
-from flask_jwt_extended import JWTManager, create_access_token
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, create_refresh_token, get_jwt_identity
 from flask_caching import Cache
 import csv
 import json
@@ -94,13 +94,12 @@ def query():
     results = cursor.fetchall()
     return str(results)
 
-@app.route('/stream-data')
+@app.route('/api/games')
+@cache.cached(timeout=50)
+@jwt_required()
 def stream_data():
-    def generate():
-        for i in (0,1,2,5,6,8,11,12,13,14,15,16,17,18,22,23,32,33,34,35,36,37,38):
-            data = fetch_column_data(get_data_from_csv(), i)
-            print(json.dumps(data))
-    return Response(generate(), mimetype='text')
+    data = get_data_from_csv()
+    return jsonify({ "data" : data, "success" : True, "message" : "Data fetched successfully"})
 
 
 @app.route('/api/auth/register', methods=['POST'])
@@ -130,7 +129,6 @@ def login_user():
 
     # print(email, password)
 
-
     db = get_db()
     cursor = db.cursor()
     cursor.execute('SELECT * FROM users WHERE email = ?', (email,))
@@ -142,10 +140,24 @@ def login_user():
 
     if auth:
         access_token = create_access_token(identity = {'id': user[0], 'email': user[3]})
-        return jsonify({ "token" : access_token, "success" : True, "message" : "User logged in successfully"})
+        refresh_token = create_refresh_token(user[0])
+        return jsonify({ "token" : access_token, "refresh_token" : refresh_token, "success" : True, "message" : "User logged in successfully"})
     else:
         return jsonify({ "data" : {}, "success" : False, "message" : "Invalid email or password"})
 
+@app.route('/api/auth/verify-token', methods=['POST'])
+@jwt_required()
+def verify():
+    return jsonify({ "success" : True, "message" : "Token is valid"})
+
+# @app.route('/refresh')
+# class TokenRefresh():
+#     @jwt_required(refresh=True)
+#     def post(self):
+#         current_user = get_jwt_identity()
+#         new_token = create_access_token(identity=current_user, fresh=False)
+
+#         return {'access_token' : new_token}, 200
 
 # Main Function
 
