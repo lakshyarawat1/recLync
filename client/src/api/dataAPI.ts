@@ -1,5 +1,6 @@
 import axios from "axios";
 
+
 export const getGamesData = async () => {
     const response = await axios.get("/games");
 
@@ -39,4 +40,9 @@ export const getGamesData = async () => {
 
     return fetchedData;
     
-    }
+}
+    
+export const setPreferences = async (tags: Array<string>) => { 
+    const response = await axios.post("/set-preferences", {preferences : tags, token : sessionStorage.getItem("token")});
+    return response.data;
+}

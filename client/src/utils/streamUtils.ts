@@ -1,4 +1,4 @@
-export const fetchDataFromArray = (data) => {
+export const fetchDataFromArray = (data :Array<string>) => {
     const response = {
         name: data[1],
         released: data[2],
@@ -26,4 +26,8 @@ export const fetchDataFromArray = (data) => {
         movies: data[38],
     }
     return response;
+}
+
+export const getTags = (tags: string) => {
+    return tags.split(",");
 }

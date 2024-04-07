@@ -18,15 +18,16 @@ const SignUpPage = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        setTimeout(() => {
-          window.location.href = "/login";
-        }, 1500);
       } else {
         Swal.fire({
           icon: "error",
           title: "Oops...",
           text: "Something went wrong!",
         });
+        sessionStorage.setItem("token", res.data.token);
+        setTimeout(() => {
+          window.location.href = "/set-preferences";
+        }, 1500);
       }
     });
   };
@@ -40,7 +41,7 @@ const SignUpPage = () => {
         />
         <Topbar />
 
-        <div className="absolute  top-[35%] left-[35%]">
+        <div className="absolute  top-[20%] left-[35%]">
           <h1 className="text-white opacity-90 text-3xl font-extrabold tracking-widest my-2">
             Sign Up
           </h1>

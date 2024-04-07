@@ -108,13 +108,18 @@ def register_user():
     password = request_data['password']
     preferences = ''
 
+    access_token = create_access_token(identity = {'id': id, 'email': email})
+    refresh_token = create_refresh_token(id)
+
+
     hashed_password = hash_password(password)
 
     db = get_db()
     cursor = db.cursor()
     cursor.execute('INSERT INTO users ( firstName, lastName, email, password, preferences) VALUES (?,?,?,?,?)', ( firstName, lastName, email, hashed_password, preferences))
     db.commit()
-    return jsonify({ "data" : request_data, "success" : True, "message" : "User registered successfully"})
+
+    return jsonify({ "data" : request_data, "success" : True, "message" : "User registered successfully", "token" : access_token, "refresh_token" : refresh_token})
 
 @app.route('/api/auth/login', methods=['POST'])
 def login_user():
@@ -132,7 +137,7 @@ def login_user():
     print(user)
 
     user_password = user[4]
-    auth = verify_password(password, user_password);
+    auth = verify_password(password, user_password)
 
     if auth:
         access_token = create_access_token(identity = {'id': user[0], 'email': user[3]})
@@ -146,6 +151,17 @@ def login_user():
 def verify():
     return jsonify({ "success" : True, "message" : "Token is valid"})
 
+@app.route('/api/set-preferences', methods=['POST'])
+@jwt_required()
+def set_preferences():
+    request_data = request.get_json()
+    preferences = request_data['preferences']
+    token = request_data['token']
+    user = get_jwt_identity()
+
+    print(user)
+
+    return jsonify({ "data" : request_data, "success" : True, "message" : "Preferences set successfully"})
 # @app.route('/refresh')
 # class TokenRefresh():
 #     @jwt_required(refresh=True)
@@ -158,4 +174,4 @@ def verify():
 # Main Function
 
 if __name__ == '__main__':  
-        app.run(debug=True)
+        app.run(debug=True, port=4000, host="0.0.0.0")

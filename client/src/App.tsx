@@ -3,9 +3,9 @@ import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import SignUpPage from "./pages/SignUpPage";
 import axios from "axios";
+import SetPreferences from "./pages/SetPreferences";
 
 function App() {
-
   axios.defaults.baseURL = "http://localhost:5000/api";
 
   return (
@@ -14,6 +14,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signUp" element={<SignUpPage />} />
+        <Route path="/set-preferences" element={<SetPreferences />} />
       </Routes>
     </>
   );

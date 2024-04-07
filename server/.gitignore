@@ -6,11 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
-app/Scripts
+db.sqlite
 
-app/db.sqlite
-
-app/games.csv
+games.csv
 
 # Distribution / packaging
 .Python
