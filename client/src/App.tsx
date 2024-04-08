@@ -6,7 +6,7 @@ import axios from "axios";
 import SetPreferences from "./pages/SetPreferences";
 
 function App() {
-  axios.defaults.baseURL = "http://localhost:5000/api";
+  axios.defaults.baseURL = "http://localhost:4000/api";
 
   return (
     <>

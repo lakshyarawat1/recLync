@@ -6,43 +6,44 @@ export const getGamesData = async () => {
 
     
     const data = response.data.data;
+    console.log(data);
 
 
     const fetchedData = data.map((game : Array<string>) => {
         return {
-            
-            id : game[0],
+              id: game[0],
             name: game[1],
             released: game[2],
-            requiredAge: game[5],
-            price: game[6],
-            description: game[8],
-            supportedLanguages: game[9],
-            reviews: game[11],
-            image: game[12],
-            website: game[13],
-            supportURL: game[14],
-            supportEmail: game[15],
-            windows: game[16],
-            mac: game[17],
-            linux: game[18],
-            positive: game[22],
-            negative: game[23],
-            developers: game[32],
-            publishers: game[33],
-            categories: game[34],
-            genres: game[35],
-            tags: game[36],
-            screenshots: game[37],
-            movies: game[38],
+            requiredAge: game[3], 
+            price: game[4],
+            description: game[5],
+            supportedLanguages: game[6],
+            reviews: game[7],
+            image: game[8],
+            website: game[9],
+            supportURL: game[10],
+            supportEmail: game[11],
+            windows: game[12],
+            mac: game[13],
+            linux: game[14],
+            positive: game[15],
+            negative: game[16],
+            developers: game[17],
+            publishers: game[18],
+            categories: game[19],
+            genres: game[20],
+            tags: game[21],
+            screenshots: game[22],
+            movies: game[23],
         }
     })
+
 
     return fetchedData;
     
 }
     
-export const setPreferences = async (tags: Array<string>) => { 
+export const setPreferences = async (tags: string) => { 
     const response = await axios.post("/set-preferences", {preferences : tags, token : sessionStorage.getItem("token")});
     return response.data;
 }

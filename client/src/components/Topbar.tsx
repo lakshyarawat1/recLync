@@ -2,7 +2,7 @@ import { navBarConstants } from "../constants/navBarConstants";
 
 const Topbar = () => {
   return (
-    <div className="w-full h-[80px] fixed items-center justify-center px-[20%] bg-[#000000] flex gap-[35%] opacity-50 z-10">
+    <div className="w-full h-[80px] fixed items-center justify-center px-[20%] bg-[#000000] flex gap-[25%] opacity-50 z-10">
       <h1 className="text-slate-300 text-3xl tracking-widest font-bold">
         <a href="/">RECLYNC</a>
       </h1>
@@ -19,14 +19,24 @@ const Topbar = () => {
         })}
       </div>
       {sessionStorage.getItem("token") ? (
-        <div
-          className="bg-red-500 rounded-xl cursor-pointer px-12 py-2"
-          onClick={() => {
-            sessionStorage.removeItem("token");
-            window.location.href = "/login";
-          }}
-        >
-          Signout
+        <div className="flex gap-2 w-full">
+          {" "}
+          <div
+            className="line-clamp-1 bg-blue-500 rounded-xl cursor-pointer px-8 hover:scale-110 py-2"
+            onClick={() => (window.location.href = "/set-preferences")}
+          >
+            Preferences
+          </div>
+          <div
+            className="bg-red-500 rounded-xl cursor-pointer px-12 hover:scale-110 py-2"
+            onClick={() => {
+              sessionStorage.removeItem("token");
+              window.location.href = "/login";
+            }}
+          >
+            Signout
+          </div>
+          
         </div>
       ) : (
         ""

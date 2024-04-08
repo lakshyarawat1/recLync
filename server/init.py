@@ -2,6 +2,7 @@ from flask import Flask,g, jsonify, request, Response
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, create_refresh_token, get_jwt_identity
 from flask_caching import Cache
+from model import recommend_games
 import csv
 import json
 import sqlite3
@@ -49,12 +50,15 @@ def teardown_db(exception):
     close_db_connection(db)
 
 def get_data_from_csv():
-    with open('games.csv', 'r', encoding='utf-8') as f:
+    with open('output.csv', 'r', encoding='utf-8') as f:
         reader = csv.reader(f)
-        next(reader)
-        all_rows = list(reader)
-        random_rows = random.sample(all_rows, 20)
-    return random_rows
+        data = []
+        
+        for i,row in enumerate(reader):
+            if i>=10 : 
+                break
+            data.append(row)
+    return data
 
 def fetch_column_data(list, index):
     data=[]
@@ -94,6 +98,19 @@ def query():
 @app.route('/api/games')
 @jwt_required()
 def stream_data():
+
+    user = get_jwt_identity()
+
+    userId = user['id']
+
+    db=get_db()
+    cursor = db.cursor()
+    preferences = cursor.execute('SELECT preferences FROM users WHERE id = ?', (userId,))
+
+
+    recommend_games(preferences)
+    
+
     data = get_data_from_csv()
     return jsonify({ "data" : data, "success" : True, "message" : "Data fetched successfully"})
 
@@ -156,10 +173,15 @@ def verify():
 def set_preferences():
     request_data = request.get_json()
     preferences = request_data['preferences']
-    token = request_data['token']
     user = get_jwt_identity()
 
-    print(user)
+    print(user, preferences)
+
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute('UPDATE users SET preferences = ? WHERE id = ?', (preferences, user['id']))
+    db.commit()
+
 
     return jsonify({ "data" : request_data, "success" : True, "message" : "Preferences set successfully"})
 # @app.route('/refresh')

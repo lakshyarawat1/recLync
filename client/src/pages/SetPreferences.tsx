@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from "react";
 import Topbar from "../components/Topbar";
 import { setPreferences } from "../api/dataAPI";
+import Swal from "sweetalert2";
 
 const SetPreferences = () => {
   const availableTags = [
@@ -22,19 +24,28 @@ const SetPreferences = () => {
     "Zombies",
   ];
 
-  const [selectedTags, setSelectedTags] = useState([]);
-  const [remainingTags, setRemainingTags] = useState(availableTags);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [remainingTags, setRemainingTags] = useState<string[]>(availableTags);
 
-  const handleSelectTags = (event) => {
-    const selectedValues = event.target.value;
-    selectedTags.push(selectedValues);
+  const handleSelectTags = (event: { target: { value: unknown } }) => {
+    const selectedValues = event.target.value as string;
+    setSelectedTags([...selectedTags, selectedValues]);
     setRemainingTags(remainingTags.filter((tag) => tag !== selectedValues));
   };
 
   const handleSubmit = async () => {
-    const response = await setPreferences(selectedTags);
+    const response = await setPreferences(selectedTags.toString());
 
-    console.log(response);
+    Swal.fire({
+      title: "Preferences Set Successfully",
+      icon: "success",
+      confirmButtonText: "Okay",
+      
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = "/";
+      }
+    });
   };
   return (
     <>
