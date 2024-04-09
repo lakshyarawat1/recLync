@@ -36,11 +36,13 @@ const SetPreferences = () => {
   const handleSubmit = async () => {
     const response = await setPreferences(selectedTags.toString());
 
+    console.log(response)
+
     Swal.fire({
       title: "Preferences Set Successfully",
       icon: "success",
       confirmButtonText: "Okay",
-      
+
     }).then((result) => {
       if (result.isConfirmed) {
         window.location.href = "/";
