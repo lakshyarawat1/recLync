@@ -79,8 +79,11 @@ def verify_password (password, hashed_password):
 
     return new_hashed_password == hashed_password
 
+
 # DB Initialized
 init_db()
+
+
 
 # Routes
 @app.route('/')
@@ -106,7 +109,6 @@ def stream_data():
     db=get_db()
     cursor = db.cursor()
     preferences = cursor.execute('SELECT preferences FROM users WHERE id = ?', (userId,))
-
 
     recommend_games(preferences)
     
@@ -145,7 +147,6 @@ def login_user():
     email = request_data['email']
     password = request_data['password']
 
-    # print(email, password)
 
     db = get_db()
     cursor = db.cursor()
@@ -184,14 +185,7 @@ def set_preferences():
 
 
     return jsonify({ "data" : request_data, "success" : True, "message" : "Preferences set successfully"})
-# @app.route('/refresh')
-# class TokenRefresh():
-#     @jwt_required(refresh=True)
-#     def post(self):
-#         current_user = get_jwt_identity()
-#         new_token = create_access_token(identity=current_user, fresh=False)
 
-#         return {'access_token' : new_token}, 200
 
 # Main Function
 

@@ -118,7 +118,7 @@ const HomePage = () => {
                     {/* <p>Publisher : {game.publishers}</p> */}
                     <p>Category : {game.categories}</p>
                     <p>Genres : {game.genres}</p>
-                    <div className="">
+                    <div className="text-xs max-h-50">
                       {tags.map((tag) => (
                         <div className="">#{tag}</div>
                       ))}

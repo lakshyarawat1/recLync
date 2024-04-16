@@ -23,6 +23,14 @@ Reclync is a game recommendation system designed to provide personalized game re
   - Docker
   - Docker Compose
 
+## Machine Learning Vs Content Based Filtering
+
+- Integrating machine learning, specifically TF-IDF (Term Frequency-Inverse Document Frequency) vectorization, into our game recommendation system enables us to leverage advanced natural language processing techniques to analyze the textual metadata associated with each game.
+
+- By applying machine learning algorithms such as content-based filtering or collaborative filtering on these feature vectors, we can generate personalized recommendations tailored to individual user preferences
+
+- This approach offers several technical advantages over traditional filtering methods, including the ability to capture nuanced semantic similarities between games, adaptability to evolving user interactions, scalability to large datasets, and the potential to uncover latent connections and patterns within the gaming catalog
+
 ## Getting Started
 
 To get started with Reclync, follow these steps:
@@ -50,8 +58,17 @@ To get started with Reclync, follow these steps:
 ## Usage
 
 1. Open your web browser and navigate to `http://localhost:8080`.
+
+![image](/assets/signIn.png)
+
 2. Set your preferences for game recommendations after signIn.
+
+![image](/assets/preferences.png)
+
 3. Navigate to `/` route to view the recommended games based on your preferences.
+
+![image](/assets/image.png)
+
 4. Click on the `Sign Out` button to sign out of the system.
 
 ## Development
